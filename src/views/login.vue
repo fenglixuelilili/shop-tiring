@@ -7,7 +7,7 @@
                 <el-input v-model="formData.username"></el-input>
             </el-form-item>
             <el-form-item label="密码">
-                <el-input v-model="formData.password" type="password"></el-input>
+                <el-input v-model="formData.password" type="password" @keydown.enter.native="login"></el-input>
             </el-form-item>
             <el-button type="primary" class="login-btn" @click="login">登陆</el-button>
         </el-form>
@@ -31,9 +31,10 @@ export default {
             console.log(res);
             const {meta:{status,msg}}=res.data;         
             if(status===200){
-                 this.$message.success("登陆成功");
+                this.$message.success("登陆成功");
                 let token=res.data.data.token;
-                sessionStorage.getItem('token',token);
+                sessionStorage.setItem('token',token);
+                this.$router.push('/home');
             }else{
                 this.$message.error(msg);
             }
