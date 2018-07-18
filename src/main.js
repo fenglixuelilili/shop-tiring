@@ -7,6 +7,7 @@ import "@/assets/css/style.css";
 // 导入element-ui
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import "nprogress/nprogress.css";
 import myAxios from "@/plugins/myAxios.js";
 import moment from "moment";
 import nav from "@/views/comments/nav.vue";

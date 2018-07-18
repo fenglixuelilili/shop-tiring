@@ -3,53 +3,52 @@
           <div class="top">
              <nav-card eval1="商品管理" eval2="商品列表"></nav-card>   
         </div>
-        <el-button tyep="success" plain class="btn"> 添加分类</el-button>
+        <el-button tyep="success" plain class="btn" @click="$router.push({name:'addGoods'})"> 添加商品</el-button>
         <el-card>
+        <!-- 数据表格 -->
         <el-table
             :data="tableData"
             style="width: 100%">
-            <eltree
-            prop="cat_name"
-            label="分类名称"
-            treeKey="cat_id"
-            levelKey="cat_level"
-            parentKey="cat_pid"
-            childKey="children"
-            indentSize="30">
-                
-            </eltree>  
-            <!-- <el-table-column
-                prop="cat_name"
-                label="分类名称"
-                width="180">
-            </el-table-column> -->
-            <el-table-column
-                label="级别"
-                width="180">
-                <template slot-scope="scope">
-                    <span v-if="scope.row.cat_level===0">一级</span>
-                    <span v-if="scope.row.cat_level===1">二级</span>
-                    <span v-if="scope.row.cat_level===2">三级</span>
-                </template>
-            </el-table-column>
-            <el-table-column
-                label="是否有效">
-                <template slot-scope="scope">
-                    {{scope.row.cat_deleted?"无效":"有效"}}
-                </template>
-            </el-table-column>
+                <el-table-column
+                type="index"
+                width="50">
+                </el-table-column>
+                 <el-table-column
+                    property="goods_name"
+                    label="商品名称"
+                    width="120">
+                </el-table-column>
+
+                <el-table-column
+                    property="goods_price"
+                    label="商品价格"
+                    width="120">
+                </el-table-column>
+                   <el-table-column
+                    property="goods_weight"
+                    label="商品重量"
+                    width="120">
+                </el-table-column>
+
+                <el-table-column
+                    property="add_time"
+                    label="创建时间"
+                    width="120">
+                </el-table-column>
 
               <el-table-column
                 label="操作">
                 <template slot-scope="scope">
                     <el-row>
                          <el-button type="primary" plain size="mini" icon="el-icon-edit"></el-button>
-                        <el-button type="warning" plain size="mini" icon="el-icon-delete"></el-button>    
+                        <el-button type="warning" plain size="mini" icon="el-icon-delete" ></el-button>    
                     </el-row>
                 </template>
                 
             </el-table-column>
     </el-table>  
+
+    <!-- 分业 -->
      <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -79,21 +78,20 @@ export default {
         }
     },
     methods:{
+        // 渲染商品列表
         async getAllList(){
-            const res = await this.$axios.get(`categories?type=3&pagenum=${this.currentpage}&pagesize=${this.pagesize}`);
-            console.log(res,1111111111111111);
-            const {data:{result,total},meta:{msg,status}}=res.data;
-            // console.log(data);
+            const res = await this.$axios.get(`goods?type=3&pagenum=${this.currentpage}&pagesize=${this.pagesize}`);
+            const {data:{goods,total},meta:{msg,status}}=res.data;
+            // console.log(res);
             if(status==200){
-                this.tableData=result;
+                this.tableData=goods;
                  this.total=total;
                    this.$message.success(msg);
             }else{
                 this.$message.error(msg);
             }
-            
-           
         },
+        // 分页逻辑
         handleSizeChange(val) {
             this.pagesize=val;
             this.getAllList();
@@ -103,10 +101,14 @@ export default {
           this.getAllList();
           this.currentpage=val;
         // console.log(`当前页: ${val}`);
-      }
+      },
+    //  
+    //   showAddproduct(){
+
+    //   } 
     },
     created(){
-        this.getAllList()
+        this.getAllList();
     }
 }
 </script>
